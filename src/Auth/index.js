@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from 'react-bootstrap'
 import Main from '../Main'
 import Public from '../Public'
@@ -61,14 +61,22 @@ const netlifyAuth = {
   class Login extends React.Component {
     state = { redirectToReferrer: false }
     abortController = new AbortController()
+    _isMounted = false
 
     login = () => {
-      netlifyAuth.authenticate(() => {
-        this.setState({ redirectToReferrer: true });
-      });
+      if(this._isMounted) {
+        netlifyAuth.authenticate(() => {
+          this.setState({ redirectToReferrer: true });
+        })
+      }
     };
 
+    componentDidMount() {
+      this._isMounted = true
+    }
+
     componentWillUnmount() {
+      this._isMounted = false
       this.abortController.abort()
     }
   
@@ -89,13 +97,25 @@ const netlifyAuth = {
 
 export default function Auth() {
 
-    const { manageLoginState, setUser } = useUserContext()
+    const { manageLoginState, setUser, user } = useUserContext()
     netlifyIdentity.on('login', (user) => {
       setUser(user)
       manageLoginState(true)
       netlifyIdentity.close()
       return
     });
+
+    netlifyIdentity.on('init', user => console.log('init', user));
+
+
+
+    useEffect(()=> {
+      // console.log(netlifyIdentity, netlifyIdentity.currentUser())
+    }, [])
+
+    useEffect(()=> {
+      // console.log(netlifyIdentity, netlifyIdentity.currentUser())
+    }, [user])
 
 
     return (

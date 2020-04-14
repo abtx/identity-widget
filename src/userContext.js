@@ -44,9 +44,9 @@ function userContext() {
   const [ state, dispatch ] = useReducer(reducer, initialState)
   const { loggedIn, user } = state
 
-  useEffect(()=> {
-    console.log(user, loggedIn)
-  }, [user, loggedIn])
+  // useEffect(()=> {
+  //   console.log(user, loggedIn)
+  // }, [user, loggedIn])
   
   
   useEffect(()=> {

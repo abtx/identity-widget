@@ -11,13 +11,20 @@ function Main(props) {
 
   useEffect(()=> {
 
-     let n = netlifyIdentity.currentUser()
+      let n = netlifyIdentity.currentUser()
       && netlifyIdentity.currentUser().user_metadata 
       && netlifyIdentity.currentUser().user_metadata.full_name 
       n && setName(n) 
-      console.log('setName to ', n)
+      // console.log('setName to ', n)
 
   }, [loggedIn, user])
+
+    netlifyIdentity.on('init', user => console.log('init', user));
+  netlifyIdentity.on('login', user => console.log('login', user));
+  netlifyIdentity.on('logout', () => console.log('Logged out'));
+  netlifyIdentity.on('error', err => console.error('Error', err));
+  netlifyIdentity.on('open', () => console.log('Widget opened'));
+  netlifyIdentity.on('close', () => console.log('Widget closed'));
 
   return (
 
