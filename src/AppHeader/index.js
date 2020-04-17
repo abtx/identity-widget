@@ -15,13 +15,7 @@ const AppHeader = (props) => {
   }, [netlifyIdentity])
   return (
     <header className='header d-flex justify-content-between'>
-      <div>
-
-        <Badge className="ml-2" pill variant="info">
-          Uggly Beta
-        </Badge>
-
-      </div>
+   
       <ButtonGroup>
         <Button size="sm" variant="outline-primary">{name}</Button>
         {props.authButton}
